@@ -39,6 +39,7 @@ It was built to practice:
 
 # 🏗️ Project Structure
 
+```text
 src/
 ├── clients/        # MySQL connection layer
 ├── config/         # Environment settings (.env loader)
@@ -47,6 +48,7 @@ src/
 
 tests/              # Unit tests
 bucket/             # Output CSV files
+```
 
 ---
 
@@ -62,24 +64,34 @@ MySQL Database → MySQLClient → ETL Job → CSV File (bucket/)
 
 ## 1. Clone repository
 
-git clone https://github.com/your-username/mysql-etl-pipeline-python.git  
-cd mysql-etl-pipeline-python  
+```bash
+git clone https://github.com/your-username/mysql-etl-pipeline-python.git
+cd mysql-etl-pipeline-python
+```
 
 ## 2. Create virtual environment
 
-python -m venv venv  
+```bash
+python -m venv venv
+```
 
 Activate:
 
 Windows:
-venv\Scripts\activate  
+```bash
+venv\Scripts\activate
+```
 
 Linux/Mac:
-source venv/bin/activate  
+```bash
+source venv/bin/activate
+```
 
 ## 3. Install dependencies
 
-pip install -r requirements.txt  
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
@@ -87,18 +99,22 @@ pip install -r requirements.txt
 
 Create a `.env` file in the root folder:
 
-MYSQL_HOST=localhost  
-MYSQL_USER=your_user  
-MYSQL_PASSWORD=your_password  
-MYSQL_DATABASE=your_database  
+```env
+MYSQL_HOST=localhost
+MYSQL_USER=your_user
+MYSQL_PASSWORD=your_password
+MYSQL_DATABASE=your_database
 
-OUTPUT_PATH=./bucket  
+OUTPUT_PATH=./bucket
+```
 
 ---
 
 # ▶️ Run the project
 
-python src/main.py  
+```bash
+python src/main.py
+```
 
 ---
 
@@ -117,7 +133,9 @@ This project applies:
 
 After execution, CSV files will be generated in:
 
+```text
 bucket/
+```
 
 ---
 
@@ -142,7 +160,3 @@ This project was built to practice:
 - CI/CD pipeline (GitHub Actions)
 
 ---
-
-# 👨‍💻 Author
-
-Built by Gustavo Marcelino — aspiring Software Engineer focused on Python, Data Engineering and Backend systems.
