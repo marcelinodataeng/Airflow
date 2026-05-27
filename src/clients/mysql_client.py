@@ -26,18 +26,52 @@ class MySQLClient:
         if self.conn:
             self.conn.close()
 
+
     def select(self, query: str):
         if not query:
             raise ValueError("Query is required")
 
-        logger.info(f"Executing query: {query}")
-
         with self.conn.cursor(dictionary=True) as cursor:
-
             cursor.execute(query)
-            logger.info("Query executed")
-
             data = cursor.fetchall()
-            logger.info("data fatched")
-
             return data
+
+
+    def insert(self, query: str, values: tuple):
+        if not query:
+            raise ValueError("Query is required")
+
+        if not values:
+            raise ValueError("Values are required")
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(query, values)
+            self.conn.commit()
+
+            logger.info("Inserted into MySQL")
+
+    def update(self, query: str, values: tuple):
+        if not query:
+            raise ValueError("Query is required")
+
+        if not values:
+            raise ValueError("Values are required")
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(query, values)
+            self.conn.commit()
+
+            logger.info("Updated MySQL")
+
+    def delete(self, query: str, values: tuple):
+        if not query:
+            raise ValueError("Query is required")
+
+        if not values:
+            raise ValueError("Values are required")
+
+        with self.conn.cursor() as cursor:
+            cursor.execute(query, values)
+            self.conn.commit()
+
+            logger.info("Deleted from MySQL")
