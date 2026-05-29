@@ -3,7 +3,7 @@ from core.logger import get_logger
 from config.settings import Settings
 from integration.databases.mysql_client import MySQLClient
 from writers.filewriter import FileWriter
-from app.jobs.mysql_to_bucket.job import MySQLToBucketJob
+from app.jobs.mysql_to_bucket import MySQLToBucketJob
 
 logger = get_logger(__name__)
 
