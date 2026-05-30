@@ -16,14 +16,23 @@ class FileWriter:
         data: list[dict[str, Any]],
         file_name: str,
     ) -> None:
+
         if not data:
             raise ValueError("No data to write")
 
-        os.makedirs(self.output_path, exist_ok=True)
+        os.makedirs(
+            self.output_path,
+            exist_ok=True,
+        )
 
-        file_path = os.path.join(self.output_path, file_name)
+        file_path = os.path.join(
+            self.output_path,
+            file_name,
+        )
 
-        logger.info(f"Writing file: {file_name}")
+        logger.info(
+            f"Writing file: {file_name}"
+        )
 
         with open(
             file_path,
@@ -31,6 +40,7 @@ class FileWriter:
             newline="",
             encoding="utf-8",
         ) as file:
+
             writer = csv.DictWriter(
                 file,
                 fieldnames=data[0].keys(),
@@ -39,4 +49,6 @@ class FileWriter:
             writer.writeheader()
             writer.writerows(data)
 
-        logger.info(f"File saved at {file_path}")
+        logger.info(
+            f"File saved at {file_path}"
+        )
