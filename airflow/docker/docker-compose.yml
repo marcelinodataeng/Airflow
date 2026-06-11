@@ -17,5 +17,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
 
+  airflow-webserver:
+    image: apache/airflow:2.9.3
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      - ../dags:/opt/airflow/dags
+
 volumes:
   postgres_data:
