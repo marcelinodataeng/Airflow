@@ -9,8 +9,6 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 from gustavo_sdk.infrastructure.common.utils import get_logger
 
-
-
 logger = get_logger(__name__)
 
 POSTGRES_CONN_ID = "postgres_default"
@@ -20,7 +18,6 @@ LANDING_DIR.mkdir(
     parents=True,
     exist_ok=True,
 )
-
 
 def extract_table(
     table_name: str,
@@ -56,11 +53,9 @@ def extract_table(
         logger.exception(
             f"Failed extracting table {table_name}"
         )
-
         raise RuntimeError(
             f"Error extracting table {table_name}"
         ) from error
-
 
 def extract_user() -> pd.DataFrame:
     return extract_table(
@@ -68,21 +63,17 @@ def extract_user() -> pd.DataFrame:
         output_file="usuarios.csv",
     )
 
-
 def extract_product() -> pd.DataFrame:
     return extract_table(
         table_name="produto",
         output_file="produtos.csv",
     )
 
-
 def save_user() -> None:
     pass
 
-
 def save_product() -> None:
     pass
-
 
 with DAG(
     dag_id="postgres_ingestion",
