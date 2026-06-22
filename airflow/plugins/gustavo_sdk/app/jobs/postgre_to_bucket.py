@@ -11,9 +11,10 @@ class PostgresToBucketJob:
     def __init__(
         self,
         db: PostgresClient,
+        bucket_prefix,
     ) -> None:
         self.db = db
-        self.settings = Settings()
+        self.setting = Settings()
 
     def extract(self, query: str) -> list[dict[str, Any]]:
         if not query:
@@ -28,7 +29,7 @@ class PostgresToBucketJob:
         file_name: str,
     ) -> None:
         save_file(
-            output_path=self.settings.output_path or "data/landing",
+            output_path=self.bucket_prefix,
             data=data,
             file_name=file_name
         )
