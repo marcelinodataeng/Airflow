@@ -2,7 +2,6 @@ import csv
 import logging
 import os
 from typing import Any
-from gustavo_sdk.infrastructure.integration.gcp.gcp import GCP
 
 def get_logger(name: str) -> logging.Logger:
     app_logger = logging.getLogger(name)
