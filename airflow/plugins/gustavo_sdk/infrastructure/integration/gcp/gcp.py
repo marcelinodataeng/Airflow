@@ -1,6 +1,10 @@
 import csv
+import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Optional
+
+import google
 from airflow.hooks.base import BaseHook
 from google.cloud import storage
 from google.oauth2 import service_account
@@ -11,23 +15,40 @@ logger = get_logger(__name__)
 
 
 class GCP:
-    def __init__(self):
-        conn = BaseHook.get_connection("gcp_default")
+    def __init__(
+            self,
+            service: google.cloud,
+            credentials_file_path: Optional[str] = None,
+            client: Optional[object] = None,
+            credentials_json: Optional[str] = None,
+            ) -> None:
 
-        service_account_info = json.loads(
-            conn.extra_dejson["keyfile_dict"]
-        )
+        self.credentials_file_path = credentials_file_path
+        self.client = client or self._get_client(service)
+        self.credentials_json = credentials_json
 
-        credentials = service_account.Credentials.from_service_account_info(
-                    service_account_info
-        )
+    def _get_client(self, service: google.cloud) -> google.cloud.client:
+        """Obtains a client for the specified Google Cloud service.
 
-        self.client = storage.Client(
-            credentials=credentials,
-            project=conn.extra_dejson["project"],
-        )
+        Args:
+            service (google.cloud): The Google Cloud service class (e.g., `storage`, `bigquery`).
 
-    def upload(
+        Returns:
+            google.cloud.client: Configured client instance.
+        """
+
+        if self.credentials_file_path:
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.credentials_file_path
+            return service.Client()
+        elif self.credentials_json:
+            info = json.loads(self.credentials_json)
+            credentials = service_account.Credentials.from_service_account_info(info=info)
+            return service.Client(credentials=credentials)
+        else:
+            return service.Client()
+
+
+    def upload_file(
         self,
         bucket_name: str,
         bucket_prefix: str,

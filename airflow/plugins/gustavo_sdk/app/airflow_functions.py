@@ -48,6 +48,7 @@ def postgres_to_bucket(
                         user: str,
                         password: str,
                         port: str,
+                        credentials_json: str,
                         ) -> None:
     try:
 
@@ -69,6 +70,7 @@ def postgres_to_bucket(
             db=db,
             bucket_name=bucket_name,
             bucket_prefix=bucket_prefix,
+            credentials_json=credentials_json,
         )
 
         job.run(

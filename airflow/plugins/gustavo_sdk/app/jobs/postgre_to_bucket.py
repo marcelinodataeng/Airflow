@@ -1,5 +1,5 @@
 from typing import Any
-
+from google.cloud import storage
 from gustavo_sdk.infrastructure.common.utils import get_logger
 from gustavo_sdk.infrastructure.integration.databases.postgres_client import PostgresClient
 from gustavo_sdk.infrastructure.integration.gcp.gcp import GCP
@@ -13,11 +13,16 @@ class PostgresToBucketJob:
         db: PostgresClient,
         bucket_name: str,
         bucket_prefix: str,
+        credentials_json: str,
     ) -> None:
+
         self.db = db
         self.bucket_name = bucket_name
         self.bucket_prefix = bucket_prefix
-        self.gcp = GCP()
+        self.gcp = GCP(
+            service=storage,
+            credentials_json=credentials_json,
+        )
 
     def extract(self, query: str) -> list[dict[str, Any]]:
         if not query:
@@ -32,7 +37,7 @@ class PostgresToBucketJob:
             file_name: str,
     ) -> None:
 
-        self.gcp.upload(
+        self.gcp.upload_file(
             bucket_name=self.bucket_name,
             bucket_prefix=self.bucket_prefix,
             data=data,
