@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Optional
-
 import google
 from airflow.hooks.base import BaseHook
 from google.cloud import storage
@@ -24,10 +23,24 @@ class GCP:
             ) -> None:
 
         self.credentials_file_path = credentials_file_path
-        self.client = client or self._get_client(service)
         self.credentials_json = credentials_json
+        self.client = client or self._get_client(service)
 
+        """
+        Existe client?
+
+        Sim:
+            utiliza o client recebido e NÃO executa _get_client(service).
+
+        Não:
+            executa _get_client(service) para criar um novo client.
+
+        _get_client(service) é utilizado quando ainda não existe um client.
+        Ele cria um client autenticado que será armazenado em self.client.
+        """
     def _get_client(self, service: google.cloud) -> google.cloud.client:
+        # metodo da classe GCP
+
         """Obtains a client for the specified Google Cloud service.
 
         Args:
@@ -37,11 +50,17 @@ class GCP:
             google.cloud.client: Configured client instance.
         """
 
-        if self.credentials_file_path:
+        if self.credentials_file_path:    # fluxo de decisão
+            # caminho para um arquivo
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = self.credentials_file_path
             return service.Client()
         elif self.credentials_json:
-            info = json.loads(self.credentials_json)
+            # não tenho o caminho mas tenho Json, usa Json
+
+
+            info = self.credentials_json
+
+            # não tenho nenhum dos dois, uso as credencias normal
             credentials = service_account.Credentials.from_service_account_info(info=info)
             return service.Client(credentials=credentials)
         else:

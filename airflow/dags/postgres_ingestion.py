@@ -19,8 +19,8 @@ database = conn_postgres.schema
 
 conn_bq = BaseHook.get_connection("gcp_default")
 service_account_info = json.loads(
-            conn_bq.extra_dejson["keyfile_dict"]
-        )
+    conn_bq.extra_dejson["keyfile_dict"]
+)
 
 with DAG(
     dag_id="ingestion_postgres_ecomercegustavo_landing",
